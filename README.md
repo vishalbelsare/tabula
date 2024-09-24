@@ -1,6 +1,6 @@
 **Is `tabula` an active project?**
 
-Tabula is, and always has been, a volunteer-run project. We've ocassionally had funding for specific features, but it's never been a commercial undertaking. At the moment, none of the original authors have the time to actively work on the project. The end-user application, hosted on this repo, is unlikely to see updates from us in the near future. [`tabula-java`](https://github.com/tabulapdf/tabula-java) sees updates and occasional bug-fix releases from time to time.
+Tabula is, and always has been, a volunteer-run project. We've occasionally had funding for specific features, but it's never been a commercial undertaking. At the moment, none of the original authors have the time to actively work on the project. The end-user application, hosted on this repo, is unlikely to see updates from us in the near future. [`tabula-java`](https://github.com/tabulapdf/tabula-java) sees updates and occasional bug-fix releases from time to time.
 
 --
 
@@ -89,6 +89,45 @@ If you have a problem, check [Known Issues](#knownissues) first, then [report an
 
   `java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -Dwarbler.port=9999 -jar tabula.jar`
 
+* ### [Docker Compose](https://docs.docker.com/compose/) quick start using [Amazon Correttto](https://github.com/corretto) image
+  Make a new directory e.g. `tabulapdf` and enter it.
+  
+  `mkdir -p /opt/docker/tabulapdf`
+  `cd /opt/docker/tabulapdf`
+  
+  Download tabula-jar package - for example version 1.2.1
+  
+  `wget https://github.com/tabulapdf/tabula/releases/download/v1.2.1/tabula-jar-1.2.1.zip`
+  
+  verify checksum (compare output with the release page)
+
+  `sha256sum tabula-jar-1.2.1.zip`
+  
+  and unzip it.
+  
+  `unzip tabula-jar-1.2.1.zip`
+  
+  Place or create a `docker-compose.yml` file, adjust accordingly
+  
+  ```
+  ### tabulapdf docker-compose.yml example ###
+  services:
+  tabulapdf:
+    image: amazoncorretto:17
+    container_name: tabulapdf-app
+    command: >
+      java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -Dwarbler.port=8080 -Dtabula.openBrowser=false -jar /app/tabula.jar
+    volumes:
+      - ./tabula:/app
+    ports:
+      - "8080:8080"
+  ```
+  
+  Run the app with
+  
+  `docker compose up -d`
+  
+  The app will be exposed on port 8080 and can be easily paired with a reverse proxy e.g. traefik
 
 If the program fails to run, double-check that you have [Java installed][jre_download]
 and then try again.
@@ -281,7 +320,7 @@ You can help by:
 
 ### Backers
 
-You can also support our continued work on Tabula with a one-time or monthly donation [on OpenCollective](https://opencollective.com/tabulapdf#support). Organizations who use Tabula can also [sponsor the project](https://opencollective.com/tabulapdf#support) for acknolwedgement on [our official site](http://tabula.technology/) and this README.
+You can also support our continued work on Tabula with a one-time or monthly donation [on OpenCollective](https://opencollective.com/tabulapdf#support). Organizations who use Tabula can also [sponsor the project](https://opencollective.com/tabulapdf#support) for acknowledgement on [our official site](http://tabula.technology/) and this README.
 
 Tabula is made possible in part through <a href="https://opencollective.com/tabulapdf">the generosity of our users</a> and through grants from the <a href="http://www.knightfoundation.org/">Knight Foundation</a> and the <a href="https://shuttleworthfoundation.org/">Shuttleworth Foundation</a>. Special thanks to all the users and organizations that support Tabula!
 
